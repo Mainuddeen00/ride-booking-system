@@ -1,0 +1,34 @@
+package com.ridebooking.payment.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "invoices")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Invoice {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long invoiceId;
+
+    @Column(nullable = false, unique = true)
+    private Long paymentId;
+
+    private Long rideId;
+
+    private Long userId;
+
+    private BigDecimal amount;
+
+    private String transactionId;
+
+    private LocalDateTime generatedAt;
+}
