@@ -19,7 +19,7 @@
 - Member 4: [Name] - Payment & Notification
 
 ## Tech Stack
-- Java 17
+- Java 21
 - Spring Boot 3.2
 - Spring Cloud (Eureka, Gateway, Feign)
 - PostgreSQL
