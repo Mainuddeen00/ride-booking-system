@@ -4,9 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-/**
- * Request DTO for creating a user profile.
- */
 @Data
 public class CreateUserRequest {
 
@@ -16,6 +13,12 @@ public class CreateUserRequest {
     @Email
     @NotBlank
     private String email;
+
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String role;
 
     private String phone;
 

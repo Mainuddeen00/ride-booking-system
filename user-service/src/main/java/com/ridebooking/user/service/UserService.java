@@ -6,18 +6,10 @@ import com.ridebooking.user.dto.UserResponse;
 
 import java.util.List;
 
-/**
- * Service interface for user operations.
- */
 public interface UserService {
-
-    UserResponse createUser(Long id, CreateUserRequest request);
-
+    UserResponse createUser(CreateUserRequest request);  // Remove Long id parameter
     UserResponse getUserById(Long id);
-
     List<UserResponse> getAllUsers();
-
     UserResponse updateUser(Long id, UpdateUserRequest request);
-
     void deleteUser(Long id);
 }
