@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Response DTO for user details.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,14 +12,9 @@ import lombok.NoArgsConstructor;
 public class UserResponse {
 
     private Long id;
-
     private String fullName;
-
     private String email;
-
+    private String role;
     private String phone;
-
     private String profileImage;
-
-    private boolean active;
 }

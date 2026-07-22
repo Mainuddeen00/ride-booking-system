@@ -37,12 +37,9 @@ public class UserController {
     /**
      * Create a new user profile.
      */
-    @PostMapping("/{id}")
-    public UserResponse createUser(
-            @PathVariable Long id,
-            @Valid @RequestBody CreateUserRequest request) {
-
-        return userService.createUser(id, request);
+    @PostMapping  // Remove "/{id}" from the path
+    public UserResponse createUser(@Valid @RequestBody CreateUserRequest request) {
+        return userService.createUser(request);
     }
 
     /**
