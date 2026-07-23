@@ -1,0 +1,20 @@
+package com.ridebooking.notification.service;
+
+import com.ridebooking.notification.dto.NotificationRequestDTO;
+import com.ridebooking.notification.dto.NotificationResponseDTO;
+
+import java.util.List;
+
+public interface NotificationService {
+
+    NotificationResponseDTO createNotification(NotificationRequestDTO requestDTO);
+
+    NotificationResponseDTO getNotificationById(Long notificationId);
+
+    List<NotificationResponseDTO> getNotificationsByUserId(Long userId);
+
+    List<NotificationResponseDTO> getAllNotifications();
+
+    NotificationResponseDTO sendNotification(Long notificationId);
+
+}
