@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findAll()
                 .stream()
                 .map(paymentMapper::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -149,7 +150,7 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findByUserId(userId)
                 .stream()
                 .map(paymentMapper::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -158,6 +159,6 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findByRideId(rideId)
                 .stream()
                 .map(paymentMapper::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 }
