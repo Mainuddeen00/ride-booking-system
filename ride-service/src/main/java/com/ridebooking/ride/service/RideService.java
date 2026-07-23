@@ -26,7 +26,6 @@ public class RideService {
     private static final double BASE_FARE = 30.0;
     private static final double RATE_PER_KM = 12.0;
 
-    // ---- Ride booking + driver matching ----
     public RideResponseDto requestRide(RideRequestDto request) {
         Ride ride = Ride.builder()
                 .riderId(request.getRiderId())
@@ -43,20 +42,21 @@ public class RideService {
         ride = rideRepository.save(ride);
 
         List<DriverDto> availableDrivers = driverServiceClient.getAvailableDrivers();
-        DriverDto nearestDriver = findNearestDriver(availableDrivers, request.getPickupLatitude(), request.getPickupLongitude());
-
-        if (nearestDriver == null) {
+        
+        if (availableDrivers.isEmpty()) {
             throw new NoDriverAvailableException();
         }
 
-        ride.setDriverId(nearestDriver.getId());
+        // Use the first available driver (simplified matching)
+        DriverDto selectedDriver = availableDrivers.get(0);
+
+        ride.setDriverId(selectedDriver.getId());
         ride.setStatus(RideStatus.DRIVER_ASSIGNED);
         ride = rideRepository.save(ride);
 
         return toDto(ride);
     }
 
-    // ---- Trip lifecycle transitions ----
     public RideResponseDto acceptRide(Long rideId) {
         Ride ride = getRideOrThrow(rideId);
         requireStatus(ride, RideStatus.DRIVER_ASSIGNED, "Ride must be DRIVER_ASSIGNED to be accepted");
@@ -98,7 +98,6 @@ public class RideService {
         return toDto(rideRepository.save(ride));
     }
 
-    // ---- Read operations ----
     public RideResponseDto getRide(Long rideId) {
         return toDto(getRideOrThrow(rideId));
     }
@@ -107,7 +106,6 @@ public class RideService {
         return rideRepository.findByRiderId(riderId).stream().map(this::toDto).toList();
     }
 
-    // ---- Helpers ----
     private Ride getRideOrThrow(Long id) {
         return rideRepository.findById(id).orElseThrow(() -> new RideNotFoundException(id));
     }
@@ -118,15 +116,8 @@ public class RideService {
         }
     }
 
-    private DriverDto findNearestDriver(List<DriverDto> drivers, double lat, double lng) {
-        return drivers.stream()
-                .min(Comparator.comparingDouble(d ->
-                        calculateDistanceKm(lat, lng, d.getCurrentLatitude(), d.getCurrentLongitude())))
-                .orElse(null);
-    }
-
     private double calculateDistanceKm(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Earth's radius in km
+        final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
